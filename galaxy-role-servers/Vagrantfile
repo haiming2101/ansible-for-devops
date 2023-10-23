@@ -16,7 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Ansible provisioning.
   config.vm.provision "lamp", type:'ansible' do |ansible|
-    ansible.verbose        = "v"
+    ansible.verbose  = "v"
     ansible.playbook = "lamp.yml"
   end
   config.vm.provision "solr", type:'ansible' do |ansible|

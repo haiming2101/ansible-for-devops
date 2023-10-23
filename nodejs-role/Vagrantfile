@@ -16,7 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Ansible provisioner.
   config.vm.provision :ansible do |ansible|
     ansible.compatibility_mode = '2.0'
-	ansible.verbose = "vvv" 
+	ansible.verbose = "vv" 
 #    ansible.verbose = "vvv"
     ansible.playbook = "playbook.yml"
     ansible.become = true

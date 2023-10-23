@@ -22,7 +22,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     logs.vm.provision :ansible do |ansible|
 	  ansible.compatibility_mode = '2.0'
-      ansible.verbose = "vvv"
+      ansible.verbose = "vv"
 	  ansible.playbook = "provisioning/elk/main.yml"
       ansible.inventory_path = "provisioning/elk/inventory"
       ansible.become = true
@@ -41,7 +41,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     web.vm.provision :ansible do |ansible|
 	  ansible.compatibility_mode = '2.0'
-      ansible.verbose = "vvv"
+      ansible.verbose = "vv"
       ansible.playbook = "provisioning/web/main.yml"
       ansible.inventory_path = "provisioning/web/inventory"
       ansible.become = true
