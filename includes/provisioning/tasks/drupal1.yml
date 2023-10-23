@@ -1,0 +1,49 @@
+---
+- name: create the Drupal install directory
+  file:
+    path: "{{ drupal_site_path }}"
+    state: directory
+
+#Clone the Drupal repository.
+
+- name: clone Drupal repository
+  git:
+    repo: http://git.drupal.org/project/drupal.git
+    version: "{{ drupal_version }}"
+    dest: "{{ drupal_site_path }}"
+
+#Install the Drupal dependencies with the Composer.
+
+- name: install Drupal dependencies with Composer
+  shell: composer install
+  args:
+    chdir: "{{ drupal_site_path }}"
+    creates: "{{ drupal_site_path }}/vendor/autoload.php"
+
+#Use Drush executable to install Drupal. We have used Ansible variables for providing the website name and the administrator credentials in the variable file.
+
+- name: install Drupal
+  shell: drush si -y --site-name="{{ drupal_site_name }}" --account-name={{ drupal_admin_username }} --account-pass="{{ drupal_admin_pass }}" --db-url=mysql://{{ drupal_db_user }}:{{ drupal_db_pass }}@{{ hostvars['db-server']['ansible_default_ipv4']['address'] }}/{{ drupal_db_name }}
+  args:
+    chdir: "{{ drupal_site_path }}"
+
+#Finally, set the proper ownership and permissions on Drupal directories and files.
+
+- name: set proper ownership
+  file:
+    path: "{{ drupal_site_path }}"
+    owner: www-data
+    group: www-data
+    recurse: yes
+
+- name: set permissions on the settings file
+  file:
+    path: "{{ drupal_site_path }}/sites/default/settings.php"
+    mode: 0744
+
+- name: set permissions on files direcotry
+  file:
+    path: "{{ drupal_site_path }}/sites/default/files"
+    mode: 0777
+    state: directory
+    recurse: yes

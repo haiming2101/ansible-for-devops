@@ -1,16 +1,16 @@
 [lamp_varnish]
-192.168.56.2
+192.168.56.2  ansible_user=vagrant ansible_ssh_private_key_file=~/.ssh/insecure_private_key
 
 [lamp_www]
-192.168.56.3
-192.168.56.4
+192.168.56.3  ansible_user=vagrant ansible_ssh_private_key_file=~/.ssh/insecure_private_key
+192.168.56.4  ansible_user=vagrant ansible_ssh_private_key_file=~/.ssh/insecure_private_key
 
 [a4d.lamp.db.1]
-192.168.56.5
+192.168.56.5  ansible_user=vagrant ansible_ssh_private_key_file=~/.ssh/insecure_private_key
 
 [lamp_db]
-192.168.56.5 mysql_replication_role=master
-192.168.56.6 mysql_replication_role=slave
+192.168.56.5 mysql_replication_role=master  ansible_user=vagrant ansible_ssh_private_key_file=~/.ssh/insecure_private_key
+192.168.56.6 mysql_replication_role=slave  ansible_user=vagrant ansible_ssh_private_key_file=~/.ssh/insecure_private_key
 
 [lamp_memcached]
-192.168.56.7
+192.168.56.7  ansible_user=vagrant ansible_ssh_private_key_file=~/.ssh/insecure_private_key

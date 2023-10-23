@@ -2,12 +2,12 @@
 - name: Get software for apt repository management.
   apt:
     name:
-      - python-apt
-      - python-pycurl
+      - python3-apt
+      - python3-pycurl
     state: present
 
-- name: Add ondrej repository for later versions of PHP.
-  apt_repository: repo='ppa:ondrej/php' update_cache=yes
+#- name: Add ondrej repository for later versions of PHP.
+#  apt_repository: repo='ppa:ondrej/php' update_cache=yes
 
 - name: "Install Apache, MySQL, PHP, and other dependencies."
   apt:
@@ -18,20 +18,20 @@
       - unzip
       - sendmail
       - apache2
-      - php7.4-common
-      - php7.4-cli
-      - php7.4-dev
-      - php7.4-gd
-      - php7.4-curl
-      - php7.4-json
-      - php7.4-opcache
-      - php7.4-xml
-      - php7.4-mbstring
-      - php7.4-pdo
-      - php7.4-mysql
-      - php7.4-apcu
+      - php
+      - php-cli
+      - php-dev
+      - php-gd
+      - php-curl
+      - php-json
+      - php-opcache
+      - php-xml
+      - php-mbstring
+      - php-pdo
+      - php-mysql
+      - php-apcu
       - libpcre3-dev
-      - libapache2-mod-php7.4
+      - libapache2-mod-php
       - python3-mysqldb
       - mysql-server
     state: present

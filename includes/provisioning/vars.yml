@@ -10,3 +10,7 @@ domain: "drupal"
 
 # Your Drupal site name.
 drupal_site_name: "Drupal Test"
+
+# Drupal Variables
+drupal_version: "8.9.x"
+drupal_site_path: "/var/www/drupal"

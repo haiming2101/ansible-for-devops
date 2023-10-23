@@ -1,6 +1,7 @@
 ---
 - hosts: all
   become: yes
+  gather_facts: yes
 
   vars:
     node_apps_location: /usr/local/opt/node

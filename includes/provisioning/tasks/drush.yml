@@ -1,18 +1,51 @@
 ---
-- name: Check out drush 8.x branch.
-  git:
-    repo: https://github.com/drush-ops/drush.git
-    version: 8.x
-    dest: /opt/drush
 
-- name: Install Drush dependencies with Composer.
-  command: >
-    /usr/local/bin/composer install
-    chdir=/opt/drush
-    creates=/opt/drush/vendor/autoload.php
-
-- name: Create drush bin symlink.
+- name: Ensure Drupal directory exists.
   file:
-    src: /opt/drush/drush
-    dest: /usr/local/bin/drush
-    state: link
+    path: "{{ drupal_core_path }}"
+    state: directory
+    owner: www-data
+    group: www-data
+- name: Check if Drupal project already exists.
+  stat:
+    path: "{{ drupal_core_path }}/composer.json"
+  register: drupal_composer_json
+- name: Create Drupal project.
+  composer:
+    command: create-project
+    arguments: drupal/recommended-project "{{ drupal_core_path }}"
+    working_dir: "{{ drupal_core_path }}"
+    no_dev: true
+  become_user: www-data
+  when: not drupal_composer_json.stat.exists
+- name: Add drush to the Drupal site with Composer.
+  composer:
+    command: require
+    arguments: drush/drush:11.*
+    working_dir: "{{ drupal_core_path }}"
+  become_user: www-data
+  when: not drupal_composer_json.stat.exists
+
+# - name: Check out drush 8.x branch.
+#   git:
+#     repo: https://github.com/drush-ops/drush.git
+#     version: 8.x
+#     dest: /opt/drush
+
+# - name: Install Drush dependencies with Composer.
+#   become: yes
+#   command: >
+#     /usr/local/bin/composer install
+#     chdir=/opt/drush
+#     creates=/opt/drush/vendor/autoload.php
+#   register: drushresult
+#   until: "drushresult is not failed"
+#   retries: 3
+#   delay: 10
+
+# - name: Create drush bin symlink.
+#   become: yes
+#   file:
+#     src: /opt/drush/drush
+#     dest: /usr/local/bin/drush
+#     state: link

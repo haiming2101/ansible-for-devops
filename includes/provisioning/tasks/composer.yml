@@ -1,9 +1,11 @@
 ---
 - name: Download Composer installer.
-  get_url:
-    url: https://getcomposer.org/installer
-    dest: /tmp/composer-installer.php
-    mode: 0755
+  shell: curl -sSv https://getcomposer.org/installer | php
+  args:
+    chdir: /usr/src/
+    creates: /usr/local/bin/composer
+#    warn: false
+  become: yes
 
 - name: Run Composer installer.
   command: >
@@ -11,7 +13,32 @@
     chdir=/tmp
     creates=/usr/local/bin/composer
 
-- name: Move Composer into globally-accessible location.
-  command: >
-    mv /tmp/composer.phar /usr/local/bin/composer
-    creates=/usr/local/bin/composer
+- name: Add Composer to global path
+  copy: 
+    dest: /usr/local/bin/composer
+    group: root
+    mode: '0755'
+    owner: root
+    src: /usr/src/composer.phar
+    remote_src: yes
+  become: yes
+  
+#   get_url:
+#     url: https://getcomposer.org/installer
+#     dest: /tmp/composer-installer.php
+#     mode: 0755
+#     register: downloadresult
+#     until: "downloadresult is not failed"
+#     retries: 3
+#     delay: 10
+
+# - name: Run Composer installer.
+#   command: >
+#     php composer-installer.php
+#     chdir=/tmp
+#     creates=/usr/local/bin/composer
+
+# - name: Move Composer into globally-accessible location.
+#   command: >
+#     mv /tmp/composer.phar /usr/local/bin/composer
+#     creates=/usr/local/bin/composer
